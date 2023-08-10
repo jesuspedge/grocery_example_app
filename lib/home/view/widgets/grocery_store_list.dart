@@ -23,10 +23,15 @@ class GroceryStoreList extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 500),
                   pageBuilder: (context, animation, __) {
                     return FadeTransition(
                       opacity: animation,
-                      child: FruitDetails(fruit: fruit),
+                      child: FruitDetails(
+                          onProductAddedToCart: () {
+                            homeBloc.addProductToCart(fruit);
+                          },
+                          fruit: fruit),
                     );
                   },
                 ),
@@ -84,18 +89,5 @@ class GroceryStoreList extends StatelessWidget {
         },
       ),
     );
-    /*return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: ListView.builder(
-          padding: const EdgeInsets.only(top: cartBarHeight),
-          itemCount: homeBloc.catalog.length,
-          itemBuilder: (contex, index) {
-            return Container(
-              height: 100,
-              width: 100,
-              color: Colors.primaries[index % Colors.primaries.length],
-            );
-          }),
-    );*/
   }
 }

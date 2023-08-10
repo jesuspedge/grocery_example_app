@@ -95,6 +95,58 @@ class _HomePageState extends State<HomePage> {
                         onVerticalDragUpdate: _onVerticalGesture,
                         child: Container(
                           color: _backgroundColor,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      'Cart',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 23),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: List.generate(
+                                              homeBloc.cart.length,
+                                              (index) => Hero(
+                                                tag:
+                                                    'list_${homeBloc.cart[index].fruit.name}toCart',
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 3),
+                                                  child: CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    backgroundImage: AssetImage(
+                                                        homeBloc.cart[index]
+                                                            .fruit.image),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const CircleAvatar(
+                                      backgroundColor: Color(0xFFF4C459),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Spacer(),
+                              Placeholder()
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -134,8 +186,8 @@ class _AppGroceryAppBarr extends StatelessWidget {
           const SizedBox(width: 10),
           const Expanded(
             child: Text(
-              'Fruits and Vegatbles',
-              style: TextStyle(color: Colors.black),
+              'Fruits and vegetables',
+              style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
           IconButton(

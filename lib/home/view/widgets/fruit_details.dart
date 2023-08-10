@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_store_app/data_repository/data_repository.dart';
 
-class FruitDetails extends StatelessWidget {
+class FruitDetails extends StatefulWidget {
   final GroceryProduct fruit;
+  final VoidCallback? onProductAddedToCart;
 
-  const FruitDetails({Key? key, required this.fruit}) : super(key: key);
+  const FruitDetails({Key? key, required this.fruit, this.onProductAddedToCart})
+      : super(key: key);
+
+  @override
+  State<FruitDetails> createState() => _FruitDetailsState();
+}
+
+class _FruitDetailsState extends State<FruitDetails> {
+  String heroTag = '';
+
+  void _addToCart(BuildContext context) {
+    widget.onProductAddedToCart!();
+    setState(() {
+      heroTag = 'toCart';
+    });
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +53,15 @@ class FruitDetails extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Hero(
-                          tag: 'list_${fruit.name}',
+                          tag: 'list_${widget.fruit.name}$heroTag',
                           child: Image.asset(
-                            fruit.image,
+                            widget.fruit.image,
                             fit: BoxFit.contain,
                             height: MediaQuery.sizeOf(context).height * 0.4,
                           ),
                         ),
                         Text(
-                          fruit.name,
+                          widget.fruit.name,
                           style: Theme.of(context)
                               .textTheme
                               .headlineMedium!
@@ -53,7 +70,7 @@ class FruitDetails extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          fruit.weight,
+                          widget.fruit.weight,
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge!
@@ -64,7 +81,7 @@ class FruitDetails extends StatelessWidget {
                           children: [
                             const Spacer(),
                             Text(
-                              '\$${fruit.price}',
+                              '\$${widget.fruit.price}',
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineMedium!
@@ -86,7 +103,7 @@ class FruitDetails extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          fruit.decription,
+                          widget.fruit.decription,
                           overflow: TextOverflow.fade,
                           style: Theme.of(context)
                               .textTheme
@@ -121,7 +138,7 @@ class FruitDetails extends StatelessWidget {
                 Expanded(
                   flex: 5,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => _addToCart(context),
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -144,11 +161,3 @@ class FruitDetails extends StatelessWidget {
     );
   }
 }
-
-/*Hero(
-          tag: 'list_${fruit.name}',
-          child: Image.asset(
-            fruit.image,
-            fit: BoxFit.cover,
-          ),
-        ),*/

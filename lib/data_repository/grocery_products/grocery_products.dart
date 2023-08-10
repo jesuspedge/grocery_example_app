@@ -57,7 +57,7 @@ List<GroceryProduct> groceryProductsList = <GroceryProduct>[
   ),
   GroceryProduct(
     price: 8.50,
-    name: 'quince',
+    name: 'Quince',
     decription:
         'The quince is the sole member of the genus Cydonia in the Malinae subtribe (which also contains apples and pears, among other fruits) of the Rosaceae family.',
     image: 'assets/images/Quince.png',
