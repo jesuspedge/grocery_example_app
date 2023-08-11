@@ -97,54 +97,113 @@ class _HomePageState extends State<HomePage> {
                           color: _backgroundColor,
                           child: Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Row(
-                                  children: [
-                                    const Text(
-                                      'Cart',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 23),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 1500),
+                                switchInCurve: Curves.decelerate,
+                                switchOutCurve: Curves.decelerate,
+                                child: homeBloc.homeState == HomeState.list
+                                    ? Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: List.generate(
-                                              homeBloc.cart.length,
-                                              (index) => Hero(
-                                                tag:
-                                                    'list_${homeBloc.cart[index].fruit.name}toCart',
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(horizontal: 3),
-                                                  child: CircleAvatar(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    backgroundImage: AssetImage(
-                                                        homeBloc.cart[index]
-                                                            .fruit.image),
+                                            horizontal: 20, vertical: 17),
+                                        child: Row(
+                                          children: [
+                                            const Text(
+                                              'Cart',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 23),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                child: SingleChildScrollView(
+                                                  physics:
+                                                      const BouncingScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Row(
+                                                    children: List.generate(
+                                                      homeBloc.cart.length,
+                                                      (index) => Hero(
+                                                        tag:
+                                                            'list_${homeBloc.cart[index].fruit.name}toCart',
+                                                        child: Stack(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(3),
+                                                              child:
+                                                                  CircleAvatar(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                backgroundImage:
+                                                                    AssetImage(homeBloc
+                                                                        .cart[
+                                                                            index]
+                                                                        .fruit
+                                                                        .image),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              top: 0,
+                                                              right: 0,
+                                                              child:
+                                                                  CircleAvatar(
+                                                                radius: 10,
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                        0xFFF4C459),
+                                                                child: Text(
+                                                                  homeBloc
+                                                                      .cart[
+                                                                          index]
+                                                                      .quantity
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          13),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                            CircleAvatar(
+                                              backgroundColor:
+                                                  const Color(0xFFF4C459),
+                                              child: Text(
+                                                homeBloc
+                                                    .totalCartElements()
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 25),
+                                              ),
+                                            )
+                                          ],
                                         ),
+                                      )
+                                    : SizedBox(
+                                        height: size.height - kToolbarHeight,
+                                        child: GroceryStoreCart(),
                                       ),
-                                    ),
-                                    const CircleAvatar(
-                                      backgroundColor: Color(0xFFF4C459),
-                                    )
-                                  ],
-                                ),
                               ),
-                              Spacer(),
-                              Placeholder()
                             ],
                           ),
                         ),
@@ -189,10 +248,6 @@ class _AppGroceryAppBarr extends StatelessWidget {
               'Fruits and vegetables',
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.display_settings_rounded),
-            onPressed: () {},
           ),
         ],
       ),

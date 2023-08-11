@@ -29,6 +29,7 @@ class SatggeredDualView extends StatelessWidget {
           maxHeight: height,
           minHeight: height,
           child: GridView.builder(
+            physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.only(top: itemHeight * 0.5, bottom: itemHeight),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

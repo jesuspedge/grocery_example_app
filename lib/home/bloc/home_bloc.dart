@@ -18,17 +18,30 @@ class HomeBloc with ChangeNotifier {
     notifyListeners();
   }
 
-  void addProductToCart(GroceryProduct fruit) {
+  void addProductToCart(GroceryProduct fruit, int quantity) {
     for (GroceryProductSelected product in cart) {
       if (product.fruit.name == fruit.name) {
-        product.increment();
+        product.quantity = product.quantity + quantity;
         notifyListeners();
         return;
       }
     }
-    cart.add(GroceryProductSelected(fruit: fruit));
+    cart.add(GroceryProductSelected(fruit: fruit, quantity: quantity));
     notifyListeners();
   }
+
+  void removeProductToCart(GroceryProductSelected product) {
+    cart.remove(product);
+    notifyListeners();
+  }
+
+  int totalCartElements() => cart.fold<int>(
+      0, (previousValue, fruit) => previousValue + fruit.quantity);
+
+  double totalCartPrice() => cart.fold<double>(
+      0,
+      (previousValue, product) =>
+          previousValue + product.fruit.price * product.quantity);
 }
 
 class GroceryProductSelected {
@@ -41,5 +54,7 @@ class GroceryProductSelected {
     quantity++;
   }
 
-  void decrement() {}
+  void decrement() {
+    quantity--;
+  }
 }

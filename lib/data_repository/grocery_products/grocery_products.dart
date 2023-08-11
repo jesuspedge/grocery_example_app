@@ -67,7 +67,7 @@ List<GroceryProduct> groceryProductsList = <GroceryProduct>[
     price: 7.80,
     name: 'Kiwi',
     decription:
-        ' Kiwi has a thin, fuzzy, fibrous, tart but edible light brown skin and light green or golden flesh with rows of tiny, black, edible seeds. The fruit has a soft texture with a sweet and unique flavour.',
+        'Kiwi has a thin, fuzzy, fibrous, tart but edible light brown skin and light green or golden flesh with rows of tiny, black, edible seeds. The fruit has a soft texture with a sweet and unique flavour.',
     image: 'assets/images/Kiwi.png',
     weight: '1 kg',
   ),

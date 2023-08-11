@@ -28,8 +28,8 @@ class GroceryStoreList extends StatelessWidget {
                     return FadeTransition(
                       opacity: animation,
                       child: FruitDetails(
-                          onProductAddedToCart: () {
-                            homeBloc.addProductToCart(fruit);
+                          onProductAddedToCart: (quantity) {
+                            homeBloc.addProductToCart(fruit, quantity);
                           },
                           fruit: fruit),
                     );

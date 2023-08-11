@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_store_app/data_repository/data_repository.dart';
+import 'package:grocery_store_app/home/home.dart';
 
 class FruitDetails extends StatefulWidget {
   final GroceryProduct fruit;
-  final VoidCallback? onProductAddedToCart;
+  final Function? onProductAddedToCart;
 
   const FruitDetails({Key? key, required this.fruit, this.onProductAddedToCart})
       : super(key: key);
@@ -14,9 +15,10 @@ class FruitDetails extends StatefulWidget {
 
 class _FruitDetailsState extends State<FruitDetails> {
   String heroTag = '';
+  int quantity = 1;
 
   void _addToCart(BuildContext context) {
-    widget.onProductAddedToCart!();
+    widget.onProductAddedToCart!(quantity);
     setState(() {
       heroTag = 'toCart';
     });
@@ -79,6 +81,23 @@ class _FruitDetailsState extends State<FruitDetails> {
                         const SizedBox(height: 10),
                         Row(
                           children: [
+                            Container(
+                              width: 110,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xFFF5F5F5),
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: NumberStepper(
+                                  initialValue: 1,
+                                  minValue: 1,
+                                  maxValue: 10,
+                                  step: 1,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      quantity = value;
+                                    });
+                                  }),
+                            ),
                             const Spacer(),
                             Text(
                               '\$${widget.fruit.price}',
