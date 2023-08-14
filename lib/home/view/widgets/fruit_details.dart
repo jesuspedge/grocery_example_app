@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_store_app/data_repository/data_repository.dart';
+import 'package:data_repository/data_repository.dart';
 import 'package:grocery_store_app/home/home.dart';
 
 class FruitDetails extends StatefulWidget {
@@ -28,18 +28,18 @@ class _FruitDetailsState extends State<FruitDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.black,
+            color: Theme.of(context).dividerColor,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).cardColor,
         elevation: 0,
       ),
       body: Column(
@@ -51,6 +51,7 @@ class _FruitDetailsState extends State<FruitDetails> {
                     child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -68,7 +69,7 @@ class _FruitDetailsState extends State<FruitDetails> {
                               .textTheme
                               .headlineMedium!
                               .copyWith(
-                                  color: Colors.black,
+                                  color: Theme.of(context).dividerColor,
                                   fontWeight: FontWeight.bold),
                         ),
                         Text(
@@ -105,7 +106,7 @@ class _FruitDetailsState extends State<FruitDetails> {
                                   .textTheme
                                   .headlineMedium!
                                   .copyWith(
-                                      color: Colors.black,
+                                      color: Theme.of(context).dividerColor,
                                       fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -117,7 +118,7 @@ class _FruitDetailsState extends State<FruitDetails> {
                               .textTheme
                               .titleLarge!
                               .copyWith(
-                                  color: Colors.black,
+                                  color: Theme.of(context).dividerColor,
                                   fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
@@ -127,7 +128,7 @@ class _FruitDetailsState extends State<FruitDetails> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
-                              .copyWith(color: Colors.black),
+                              .copyWith(color: Theme.of(context).dividerColor),
                         ),
                       ],
                     ),
@@ -146,7 +147,7 @@ class _FruitDetailsState extends State<FruitDetails> {
                     onPressed: () {},
                     icon: const Icon(
                       Icons.favorite_border_rounded,
-                      color: Colors.black26,
+                      color: Colors.grey,
                     ),
                   ),
                 ),

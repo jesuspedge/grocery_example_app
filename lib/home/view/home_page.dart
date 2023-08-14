@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_store_app/app/app.dart';
 import 'package:grocery_store_app/home/home.dart';
 import 'package:grocery_store_app/providers/providers.dart';
 
-const Color _listBackgroundColor = Color(0xFFF5F5F5);
-const Color _backgroundColor = Colors.black;
 const cartBarHeight = 100.0;
 const _panelTransitionDuration = Duration(milliseconds: 500);
 
@@ -62,7 +61,7 @@ class _HomePageState extends State<HomePage> {
           animation: homeBloc,
           builder: (context, _) {
             return Scaffold(
-              backgroundColor: _backgroundColor,
+              backgroundColor: Colors.transparent,
               body: SafeArea(
                 child: Stack(
                   children: [
@@ -77,10 +76,11 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(30)),
                         child: Container(
-                          decoration: const BoxDecoration(
-                            color: _listBackgroundColor,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
                           ),
-                          child: const GroceryStoreList(),
+                          // ignore: prefer_const_constructors
+                          child: GroceryStoreList(),
                         ),
                       ),
                     ),
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         onVerticalDragUpdate: _onVerticalGesture,
                         child: Container(
-                          color: _backgroundColor,
+                          color: Colors.black,
                           child: Column(
                             children: [
                               AnimatedSwitcher(
@@ -230,25 +230,38 @@ class _AppGroceryAppBarr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appBloc = AppProvider.of(context)!.bloc;
     return Container(
       height: kToolbarHeight,
-      color: _listBackgroundColor,
+      color: Theme.of(context).primaryColor,
       child: Row(
         children: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.black,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           const SizedBox(width: 10),
-          const Expanded(
+          Expanded(
             child: Text(
               'Fruits and vegetables',
-              style: TextStyle(color: Colors.black, fontSize: 20),
+              style: TextStyle(
+                  color: Theme.of(context).dividerColor, fontSize: 20),
             ),
           ),
+          IconButton(
+            onPressed: () {
+              appBloc.changeTheme();
+            },
+            icon: Icon(
+              appBloc.appThemeState == AppThemeState.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+              color: Theme.of(context).dividerColor,
+            ),
+          )
         ],
       ),
     );

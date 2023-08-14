@@ -39,7 +39,7 @@ class GroceryStoreList extends StatelessWidget {
             },
             child: Card(
               elevation: 10.0,
-              shadowColor: Colors.black26,
+              shadowColor: Theme.of(context).shadowColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: Padding(
@@ -59,9 +59,9 @@ class GroceryStoreList extends StatelessWidget {
                     ),
                     Text(
                       '\$${fruit.price}',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Theme.of(context).dividerColor,
                           fontSize: 20),
                     ),
                     const SizedBox(
@@ -69,9 +69,9 @@ class GroceryStoreList extends StatelessWidget {
                     ),
                     Text(
                       fruit.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: Theme.of(context).dividerColor,
                           fontSize: 14),
                     ),
                     Text(

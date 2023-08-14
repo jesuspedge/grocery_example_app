@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_store_app/data_repository/data_repository.dart';
+import 'package:data_repository/data_repository.dart';
 
 enum HomeState { list, details, cart }
 
