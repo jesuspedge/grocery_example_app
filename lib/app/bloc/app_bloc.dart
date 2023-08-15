@@ -1,16 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
-enum AppThemeState { light, dark }
+part 'app_event.dart';
+part 'app_state.dart';
 
-class AppBloc with ChangeNotifier {
-  AppThemeState appThemeState = AppThemeState.light;
+class AppBloc extends Bloc<AppEvent, AppState> {
+  AppBloc(AppState appState)
+      : super(appState.themeState == AppThemeState.light
+            ? const AppState.enableLightTheme()
+            : const AppState.enableDarkTheme()) {
+    on<AppThemeChanged>(_onThemeChanged);
+  }
 
-  void changeTheme() {
-    if (appThemeState == AppThemeState.light) {
-      appThemeState = AppThemeState.dark;
-    } else {
-      appThemeState = AppThemeState.light;
-    }
-    notifyListeners();
+  void _onThemeChanged(AppThemeChanged event, Emitter<AppState> emit) {
+    emit(event.enableLightTheme
+        ? const AppState.enableLightTheme()
+        : const AppState.enableDarkTheme());
   }
 }

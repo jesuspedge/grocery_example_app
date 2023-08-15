@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:data_repository/data_repository.dart';
-import 'package:grocery_store_app/home/home.dart';
+import 'package:grocery_store_app/app/app.dart';
 
 class FruitDetails extends StatefulWidget {
   final GroceryProduct fruit;

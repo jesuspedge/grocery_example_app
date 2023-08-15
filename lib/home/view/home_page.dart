@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_store_app/app/app.dart';
 import 'package:grocery_store_app/home/home.dart';
 import 'package:grocery_store_app/providers/providers.dart';
@@ -230,7 +231,6 @@ class _AppGroceryAppBarr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBloc = AppProvider.of(context)!.bloc;
     return Container(
       height: kToolbarHeight,
       color: Theme.of(context).primaryColor,
@@ -251,16 +251,24 @@ class _AppGroceryAppBarr extends StatelessWidget {
                   color: Theme.of(context).dividerColor, fontSize: 20),
             ),
           ),
-          IconButton(
-            onPressed: () {
-              appBloc.changeTheme();
+          BlocBuilder<AppBloc, AppState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () {
+                  AppThemeChanged appThemeChanged =
+                      state.themeState == AppThemeState.light
+                          ? const AppThemeChanged(enableLightTheme: false)
+                          : const AppThemeChanged(enableLightTheme: true);
+                  context.read<AppBloc>().add(appThemeChanged);
+                },
+                icon: Icon(
+                  state.themeState == AppThemeState.light
+                      ? Icons.dark_mode
+                      : Icons.light_mode,
+                  color: Theme.of(context).dividerColor,
+                ),
+              );
             },
-            icon: Icon(
-              appBloc.appThemeState == AppThemeState.light
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-              color: Theme.of(context).dividerColor,
-            ),
           )
         ],
       ),

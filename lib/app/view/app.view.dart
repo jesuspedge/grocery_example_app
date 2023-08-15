@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_store_app/app/app.dart';
 import 'package:grocery_store_app/home/home.dart';
-import 'package:grocery_store_app/providers/providers.dart';
 import 'package:grocery_store_app/theme.dart';
 
 class App extends StatelessWidget {
@@ -9,7 +9,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppView();
+    AppState appState = const AppState(themeState: AppThemeState.light);
+    return BlocProvider(
+      create: (_) => AppBloc(appState),
+      child: const AppView(),
+    );
   }
 }
 
@@ -21,24 +25,17 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  final appBloc = AppBloc();
-
   @override
   Widget build(BuildContext context) {
-    return AppProvider(
-      bloc: appBloc,
-      child: AnimatedBuilder(
-        animation: appBloc,
-        builder: (context, _) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: appBloc.appThemeState == AppThemeState.light
-                ? lightTheme
-                : darkTheme,
-            home: const HomePage(),
-          );
-        },
-      ),
+    return BlocBuilder<AppBloc, AppState>(
+      builder: (context, state) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme:
+              state.themeState == AppThemeState.light ? lightTheme : darkTheme,
+          home: const HomePage(),
+        );
+      },
     );
   }
 }
