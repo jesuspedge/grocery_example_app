@@ -10,10 +10,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppState appState = const AppState(themeState: AppThemeState.light);
-    return BlocProvider(
-      create: (_) => AppBloc(appState),
-      child: const AppView(),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider(create: (context) => AppBloc(appState)),
+      BlocProvider(create: (context) => HomeBloc())
+    ], child: const AppView());
   }
 }
 

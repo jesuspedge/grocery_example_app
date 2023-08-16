@@ -1,15 +1,14 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
-import 'package:grocery_store_app/providers/grocery_provider/grocery_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_store_app/home/home.dart';
 
 class GroceryStoreCart extends StatelessWidget {
   GroceryStoreCart({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final homeBloc = GroceryProvider.of(context)!.bloc;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: Column(
@@ -25,31 +24,34 @@ class GroceryStoreCart extends StatelessWidget {
           const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
-              itemCount: homeBloc.cart.length,
+              itemCount: context.read<HomeBloc>().productsInCart.length,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                var product = homeBloc.cart[index];
+                var element = context.read<HomeBloc>().productsInCart[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Dismissible(
-                    key: Key(product.fruit.name),
-                    onDismissed: (direction) =>
-                        homeBloc.removeProductToCart(product),
+                    key: Key(element.product.name),
+                    onDismissed: (direction) {
+                      context
+                          .read<HomeBloc>()
+                          .add(RemoveProductToCart(element));
+                    },
                     child: Row(
                       children: [
                         CircleAvatar(
                           backgroundColor: Colors.white,
-                          backgroundImage: AssetImage(product.fruit.image),
+                          backgroundImage: AssetImage(element.product.image),
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          '${product.quantity}  x     ${product.fruit.name}',
+                          '${element.quantity}  x     ${element.product.name}',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 17),
                         ),
                         const Spacer(),
                         Text(
-                          '\$${product.fruit.price}',
+                          '\$${element.product.price}',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 20),
                         )
@@ -71,7 +73,7 @@ class GroceryStoreCart extends StatelessWidget {
                   style: TextStyle(color: Colors.grey, fontSize: 25),
                 ),
                 Text(
-                  '\$${homeBloc.totalCartPrice().toStringAsFixed(2)}',
+                  '\$${context.read<HomeBloc>().totalCartPrice().toStringAsFixed(2)}',
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

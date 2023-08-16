@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_store_app/home/home.dart';
-import 'package:grocery_store_app/providers/providers.dart';
 import 'package:grocery_store_app/app/app.dart';
 
 class GroceryStoreList extends StatelessWidget {
@@ -8,20 +8,21 @@ class GroceryStoreList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeBloc = GroceryProvider.of(context)!.bloc;
-
     return Container(
       padding: const EdgeInsets.only(left: 10, right: 10, top: cartBarHeight),
       color: Colors.transparent,
       child: SatggeredDualView(
-        itemCount: homeBloc.catalog.length,
+        itemCount: context.read<HomeBloc>().catalog.length,
         aspectRatio: 0.7,
         spacing: 3.0,
         translation: 0.2,
         itemBuilder: (context, index) {
-          final fruit = homeBloc.catalog[index];
+          final fruit = context.read<HomeBloc>().catalog[index];
           return GestureDetector(
             onTap: () {
+              context
+                  .read<HomeBloc>()
+                  .add(const ChangePage(status: HomeStatus.details));
               Navigator.of(context).push(
                 PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 500),
@@ -30,7 +31,9 @@ class GroceryStoreList extends StatelessWidget {
                       opacity: animation,
                       child: FruitDetails(
                           onProductAddedToCart: (quantity) {
-                            homeBloc.addProductToCart(fruit, quantity);
+                            context
+                                .read<HomeBloc>()
+                                .add(AddProductToCart(fruit, quantity));
                           },
                           fruit: fruit),
                     );

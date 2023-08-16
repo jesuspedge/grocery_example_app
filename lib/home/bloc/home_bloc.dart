@@ -1,60 +1,65 @@
-import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:data_repository/data_repository.dart';
 
-enum HomeState { list, details, cart }
+part 'home_event.dart';
+part 'home_state.dart';
 
-class HomeBloc with ChangeNotifier {
-  HomeState homeState = HomeState.list;
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  HomeBloc() : super(const HomeState()) {
+    on<ChangePage>(_onChangePage);
+    on<AddProductToCart>(_addProductToCart);
+    on<RemoveProductToCart>(_onRemoveProductToCart);
+  }
+
   List<GroceryProduct> catalog = List.unmodifiable(groceryProductsList);
-  List<GroceryProductSelected> cart = [];
+  List<ProductInCart> productsInCart = [];
 
-  void changeToList() {
-    homeState = HomeState.list;
-    notifyListeners();
+  void _onChangePage(ChangePage event, Emitter<HomeState> emit) {
+    switch (event.status) {
+      case HomeStatus.list:
+        emit(const HomeState.enableList());
+        break;
+      case HomeStatus.cart:
+        emit(const HomeState.enableCart());
+        break;
+      case HomeStatus.details:
+        emit(const HomeState.enableDetails());
+        break;
+    }
   }
 
-  void changeToCart() {
-    homeState = HomeState.cart;
-    notifyListeners();
-  }
-
-  void addProductToCart(GroceryProduct fruit, int quantity) {
-    for (GroceryProductSelected product in cart) {
-      if (product.fruit.name == fruit.name) {
-        product.quantity = product.quantity + quantity;
-        notifyListeners();
+  void _addProductToCart(AddProductToCart event, Emitter<HomeState> emit) {
+    for (ProductInCart element in productsInCart) {
+      if (element.product.name == event.product.name) {
+        element.quantity = element.quantity + event.quantity;
+        emit(const HomeState.enableList());
         return;
       }
     }
-    cart.add(GroceryProductSelected(fruit: fruit, quantity: quantity));
-    notifyListeners();
+    productsInCart
+        .add(ProductInCart(product: event.product, quantity: event.quantity));
+    emit(const HomeState.enableList());
   }
 
-  void removeProductToCart(GroceryProductSelected product) {
-    cart.remove(product);
-    notifyListeners();
+  void _onRemoveProductToCart(
+      RemoveProductToCart event, Emitter<HomeState> emit) {
+    productsInCart.remove(event.productInCart);
+    emit(const HomeState.enableCart());
   }
 
-  int totalCartElements() => cart.fold<int>(
+  int totalCartElements() => productsInCart.fold<int>(
       0, (previousValue, fruit) => previousValue + fruit.quantity);
 
-  double totalCartPrice() => cart.fold<double>(
+  double totalCartPrice() => productsInCart.fold<double>(
       0,
-      (previousValue, product) =>
-          previousValue + product.fruit.price * product.quantity);
+      (previousValue, productInCart) =>
+          previousValue + productInCart.product.price * productInCart.quantity);
 }
 
-class GroceryProductSelected {
-  GroceryProductSelected({this.quantity = 1, required this.fruit});
+class ProductInCart {
+  ProductInCart({this.quantity = 1, required this.product});
 
   int quantity;
-  final GroceryProduct fruit;
-
-  void increment() {
-    quantity++;
-  }
-
-  void decrement() {
-    quantity--;
-  }
+  final GroceryProduct product;
 }
