@@ -73,7 +73,7 @@ class GroceryStoreCart extends StatelessWidget {
                   style: TextStyle(color: Colors.grey, fontSize: 25),
                 ),
                 Text(
-                  '\$${context.read<HomeBloc>().totalCartPrice().toStringAsFixed(2)}',
+                  '\$${context.read<HomeBloc>().state.total.toStringAsFixed(2)}',
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

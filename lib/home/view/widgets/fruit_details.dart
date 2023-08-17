@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:data_repository/data_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_store_app/app/app.dart';
+import 'package:grocery_store_app/home/bloc/home_bloc.dart';
 
 class FruitDetails extends StatefulWidget {
   final GroceryProduct fruit;
@@ -32,6 +34,9 @@ class _FruitDetailsState extends State<FruitDetails> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
+            context
+                .read<HomeBloc>()
+                .add(const ChangePage(status: HomeStatus.list));
             Navigator.of(context).pop();
           },
           icon: Icon(

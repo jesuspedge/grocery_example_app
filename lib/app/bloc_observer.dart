@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:grocery_store_app/home/home.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -13,7 +14,18 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    log('Change: ${change.nextState}');
+
+    if (change.nextState is HomeState) {
+      HomeState state = change.nextState;
+      List<ProductInCart> products = state.productsInCart;
+      List<String> namesOfProducts = [];
+      for (var element in products) {
+        namesOfProducts.add('${element.product.name} x ${element.quantity}');
+      }
+      log('Change: ${state.status}, $namesOfProducts, ${state.total}');
+    } else {
+      log('Change: ${change.nextState}');
+    }
   }
 
   @override

@@ -121,13 +121,10 @@ class _HomePageState extends State<HomePage> {
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
                                                 children: List.generate(
-                                                  context
-                                                      .read<HomeBloc>()
-                                                      .productsInCart
-                                                      .length,
+                                                  state.productsInCart.length,
                                                   (index) => Hero(
                                                     tag:
-                                                        'list_${context.read<HomeBloc>().productsInCart[index].product.name}toCart',
+                                                        'list_${state.productsInCart[index].product.name}toCart',
                                                     child: Stack(
                                                       children: [
                                                         Padding(

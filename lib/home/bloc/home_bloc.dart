@@ -14,17 +14,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   List<GroceryProduct> catalog = List.unmodifiable(groceryProductsList);
   List<ProductInCart> productsInCart = [];
+  double totalPrice = 0;
 
   void _onChangePage(ChangePage event, Emitter<HomeState> emit) {
     switch (event.status) {
       case HomeStatus.list:
-        emit(const HomeState.enableList());
+        emit(HomeState.enableList(productsInCart, totalPrice));
         break;
       case HomeStatus.cart:
-        emit(const HomeState.enableCart());
+        emit(HomeState.enableCart(productsInCart, totalPrice));
         break;
       case HomeStatus.details:
-        emit(const HomeState.enableDetails());
+        emit(HomeState.enableDetails(productsInCart, totalPrice));
         break;
     }
   }
@@ -33,19 +34,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     for (ProductInCart element in productsInCart) {
       if (element.product.name == event.product.name) {
         element.quantity = element.quantity + event.quantity;
-        emit(const HomeState.enableList());
+        totalPrice = totalCartPrice();
+        emit(HomeState.enableList(productsInCart, totalPrice));
         return;
       }
     }
+
     productsInCart
         .add(ProductInCart(product: event.product, quantity: event.quantity));
-    emit(const HomeState.enableList());
+    totalPrice = totalCartPrice();
+    emit(HomeState.enableList(productsInCart, totalPrice));
   }
 
   void _onRemoveProductToCart(
       RemoveProductToCart event, Emitter<HomeState> emit) {
     productsInCart.remove(event.productInCart);
-    emit(const HomeState.enableCart());
+    totalPrice = totalCartPrice();
+    emit(HomeState.enableCart(productsInCart, totalPrice));
   }
 
   int totalCartElements() => productsInCart.fold<int>(
